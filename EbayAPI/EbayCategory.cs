@@ -66,7 +66,7 @@ namespace EbayAPI
 
             request.Version = "949";
             request.WarningLevel = WarningLevelCodeType.High;
-            //request.CategoryID = CategoryID;
+            request.CategoryID = CategoryID;
             request.FeatureID = new FeatureIDCodeTypeCollection {
             FeatureIDCodeType.ConditionValues,
             FeatureIDCodeType.ListingDurations,
@@ -115,10 +115,20 @@ namespace EbayAPI
         {
             eBayAPIInterfaceService service = EbayCalls.EbayServiceCall("GetCategories");
 
-            get
+            GetCategoriesRequestType request = new GetCategoriesRequestType();
+            request.Version = "949";
+            request.CategorySiteID = "3";
+            request.DetailLevel = new DetailLevelCodeTypeCollection { DetailLevelCodeType.ReturnAll};
+            GetCategoriesResponseType response = service.GetCategories(request);
 
+            Console.WriteLine("===============");
+            Console.WriteLine("CategoryID - Name List");
+            Console.WriteLine("===============");
+
+            foreach (dynamic cat in response.CategoryArray)
+            {
+                Console.WriteLine("{0} - {1}", cat.CategotID, cat.CategoryName);
+            }
         }
-
-
     }
 }
